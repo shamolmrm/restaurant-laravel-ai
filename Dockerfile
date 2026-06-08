@@ -1,32 +1,25 @@
 FROM php:8.2-apache
 
-# Use php-extension-installer for reliable extension installation
+# Install php-extension-installer for reliable PHP extension installation
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-# Install required PHP extensions (handles all dependencies automatically)
-RUN install-php-extensions \
-    pdo_mysql \
-    pdo_pgsql \
-    mbstring \
-    xml \
-    bcmath \
-    gd \
-    intl \
-    zip \
-    opcache
+# Install PHP extensions (installer handles all native library deps)
+RUN install-php-extensions pdo_mysql pdo_pgsql pdo_sqlite mbstring xml bcmath gd intl zip opcache
 
-# Install system tools
+# Install system packages
 RUN apt-get update -y && apt-get install -y git unzip curl && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules
 RUN a2enmod rewrite headers
 
-# Set document root to Laravel public/
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
- && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf 2>/dev/null; \
-    printf '\n<Directory /var/www/html/public>\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' \
-    >> /etc/apache2/apache2.conf
+# Configure Apache document root to Laravel public/
+RUN echo '<VirtualHost *:80>' > /etc/apache2/sites-available/000-default.conf && \
+    echo '    DocumentRoot /var/www/html/public' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '    <Directory /var/www/html/public>' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '        AllowOverride All' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '        Require all granted' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -35,22 +28,31 @@ WORKDIR /var/www/html
 
 COPY . .
 
-# Create temp .env so artisan commands work during build
-RUN cp .env.example .env && php artisan key:generate --force
+# Use build-only .env (SQLite, no real DB) to satisfy any artisan calls during composer
+COPY .env.docker .env
 
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+# Install PHP dependencies, skip post-install scripts (no DB commands run during build)
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --no-scripts
 
-# Fix permissions
-RUN mkdir -p storage/logs storage/framework/{sessions,views,cache/data} bootstrap/cache \
+# Ensure required storage directories exist with correct permissions
+RUN mkdir -p \
+    storage/logs \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/framework/cache/data \
+    bootstrap/cache \
  && chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R 775 storage bootstrap/cache
 
-RUN php artisan storage:link 2>/dev/null || true
-
 EXPOSE 80
 
-CMD php artisan config:clear && \
+# At runtime Render injects real env vars — remove the build .env so runtime vars take over
+CMD rm -f .env bootstrap/cache/config.php bootstrap/cache/routes*.php && \
+    php artisan storage:link --force 2>/dev/null; \
     php artisan migrate --force && \
     php artisan db:seed --force && \
     php artisan config:cache && \
