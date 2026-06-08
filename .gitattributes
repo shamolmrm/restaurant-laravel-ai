@@ -1,16 +1,24 @@
 * text=auto eol=lf
 
-*.blade.php diff=html linguist-language=HTML
+# Blade counted as HTML (removes "Blade" from language bar)
+*.blade.php linguist-language=HTML
+
+# Keep diff hints
 *.css diff=css
 *.html diff=html
 *.md diff=markdown
 *.php diff=php
-*.js linguist-language=JavaScript
 
-# Exclude vendor and generated files from language stats only
+# Make CSS and JS explicitly detectable
+*.css linguist-language=CSS
+*.js linguist-language=JavaScript
+*.scss linguist-language=CSS
+
+# Exclude vendor and generated files from language stats
 vendor/** linguist-vendored
 node_modules/** linguist-vendored
 public/build/** linguist-generated
+public/mix-manifest.json linguist-generated
 
 /.github export-ignore
 CHANGELOG.md export-ignore
