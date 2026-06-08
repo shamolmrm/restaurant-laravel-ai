@@ -1,66 +1,56 @@
 FROM php:8.2-apache
 
-# Install system dependencies
-RUN apt-get update -y && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev \
-    libonig-dev libxml2-dev libpq-dev \
-    libzip-dev libicu-dev \
-    zip unzip curl git \
-    && rm -rf /var/lib/apt/lists/*
+# Use php-extension-installer for reliable extension installation
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-# Configure and install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install \
-    pdo pdo_mysql pdo_pgsql \
-    mbstring xml bcmath gd intl zip opcache
+# Install required PHP extensions (handles all dependencies automatically)
+RUN install-php-extensions \
+    pdo_mysql \
+    pdo_pgsql \
+    mbstring \
+    xml \
+    bcmath \
+    gd \
+    intl \
+    zip \
+    opcache
+
+# Install system tools
+RUN apt-get update -y && apt-get install -y git unzip curl && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules
 RUN a2enmod rewrite headers
 
 # Set document root to Laravel public/
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-    /etc/apache2/sites-available/*.conf \
-    /etc/apache2/apache2.conf \
-    /etc/apache2/conf-available/*.conf 2>/dev/null || true
-
-# Allow .htaccess overrides in document root
-RUN echo '\n<Directory /var/www/html/public>\n\
-    Options Indexes FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' >> /etc/apache2/apache2.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+ && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf 2>/dev/null; \
+    printf '\n<Directory /var/www/html/public>\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' \
+    >> /etc/apache2/apache2.conf
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy application files
 COPY . .
 
-# Create temporary .env for build phase (will be replaced by real env vars at runtime)
-RUN cp .env.example .env
+# Create temp .env so artisan commands work during build
+RUN cp .env.example .env && php artisan key:generate --force
 
-# Generate a dummy key so artisan commands work during build
-RUN php artisan key:generate --force
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Fix permissions
+RUN mkdir -p storage/logs storage/framework/{sessions,views,cache/data} bootstrap/cache \
+ && chown -R www-data:www-data storage bootstrap/cache \
+ && chmod -R 775 storage bootstrap/cache
 
-# Set permissions
-RUN mkdir -p storage/logs storage/framework/sessions storage/framework/views storage/framework/cache/data bootstrap/cache && \
-    chown -R www-data:www-data storage bootstrap/cache && \
-    chmod -R 775 storage bootstrap/cache
-
-# Create storage link during build
 RUN php artisan storage:link 2>/dev/null || true
 
 EXPOSE 80
 
-# Runtime startup: clear build cache, apply real env vars, migrate, then start Apache
 CMD php artisan config:clear && \
-    php artisan cache:clear && \
     php artisan migrate --force && \
     php artisan db:seed --force && \
     php artisan config:cache && \
