@@ -1,13 +1,10 @@
 * text=auto eol=lf
 
-*.blade.php diff=html linguist-language=PHP
-*.css diff=css
+*.blade.php diff=html linguist-detectable=false
+*.css diff=css linguist-detectable=false
 *.html diff=html
 *.md diff=markdown
 *.php diff=php
-
-# Tell GitHub Linguist to treat Blade as PHP (so language bar shows PHP)
-resources/views/**/*.blade.php linguist-language=PHP
 
 # Exclude vendor, node_modules, generated assets from language stats
 vendor/** linguist-vendored
@@ -17,6 +14,8 @@ public/css/** linguist-vendored
 public/js/** linguist-vendored
 resources/js/** linguist-detectable=false
 resources/css/** linguist-detectable=false
+resources/sass/** linguist-detectable=false
+database/migrations/** linguist-detectable=false
 
 /.github export-ignore
 CHANGELOG.md export-ignore
