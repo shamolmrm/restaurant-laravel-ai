@@ -1,0 +1,56 @@
+services:
+  - type: web
+    name: restaurant-rms
+    runtime: php
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+      php artisan storage:link
+    startCommand: vendor/bin/heroku-php-apache2 public/
+    envVars:
+      - key: APP_NAME
+        value: "Restaurant Management System"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: restaurant-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: restaurant-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: restaurant-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: restaurant-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: restaurant-db
+          property: password
+
+databases:
+  - name: restaurant-db
+    databaseName: restaurant_rms
+    user: restaurant_user
+    plan: free
