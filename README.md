@@ -1,59 +1,96 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍽️ Restaurant Management System (RMS)
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/images/logo.png" alt="Restaurant RMS Logo" width="120" />
 </p>
 
-## About Laravel
+<p align="center">
+  A complete, full-featured Restaurant Management System built with Laravel 12 and Bootstrap 5.
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Built With
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Technology | Version |
+|---|---|
+| PHP | 8.2+ |
+| Laravel | 12.x |
+| Bootstrap | 5.3 |
+| MySQL / PostgreSQL | Latest |
+| Chart.js | 4.x |
+| Spatie Laravel Permission | 6.x |
+| DomPDF (barryvdh) | 3.x |
+| Font Awesome | 6.x |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Dashboard** — Real-time sales charts, KPIs, recent orders & low-stock alerts
+- **POS (Point of Sale)** — Fast order entry with table/takeaway/delivery modes
+- **Menu Management** — Categories, items, modifiers, pricing & availability
+- **Order Management** — Track orders from kitchen to delivery
+- **Table Management** — Floor plan with real-time table status
+- **Kitchen Display (KDS)** — Live kitchen order queue
+- **Inventory** — Stock tracking, low-stock alerts, supplier management
+- **Employees** — Profiles, roles, attendance & salary
+- **Customers** — CRM with loyalty points & purchase history
+- **Delivery** — Assign & track delivery orders
+- **Coupons & Discounts** — Flexible coupon system with usage limits
+- **Reports** — Sales, inventory, customers, tax — export to PDF
+- **Settings** — Restaurant info, business hours, tax & loyalty config
+- **User & Role Management** — RBAC with 7 roles via Spatie Permission
+- **Notifications** — In-app notification system
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## User Roles
 
-### Premium Partners
+| Role | Description |
+|---|---|
+| Super Admin | Full system access |
+| Admin | All modules except system settings |
+| Manager | Orders, inventory, reports, staff |
+| Cashier | POS, orders, payments |
+| Waiter | Table orders, KDS view |
+| Kitchen Staff | KDS, order status updates |
+| Delivery | Delivery order management |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Installation (Local)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+git clone https://github.com/shamolmrm/restaurant-laravel-ai.git
+cd restaurant-laravel-ai
+composer install
+cp .env.example .env
+php artisan key:generate
+# Configure database in .env
+php artisan migrate --seed
+php artisan storage:link
+php artisan serve
+```
 
-## Code of Conduct
+Default login after seeding:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Role | Email | Password |
+|---|---|---|
+| Super Admin | admin@restaurant.com | password |
+| Manager | manager@restaurant.com | password |
+| Cashier | cashier@restaurant.com | password |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Developer
+
+**Shamol**
+Email: shamolbro@gmail.com
+GitHub: [shamolmrm](https://github.com/shamolmrm)
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
