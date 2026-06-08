@@ -1,21 +1,16 @@
 * text=auto eol=lf
 
-*.blade.php diff=html linguist-detectable=false
-*.css diff=css linguist-detectable=false
+*.blade.php diff=html linguist-language=HTML
+*.css diff=css
 *.html diff=html
 *.md diff=markdown
 *.php diff=php
+*.js linguist-language=JavaScript
 
-# Exclude vendor, node_modules, generated assets from language stats
+# Exclude vendor and generated files from language stats only
 vendor/** linguist-vendored
 node_modules/** linguist-vendored
 public/build/** linguist-generated
-public/css/** linguist-vendored
-public/js/** linguist-vendored
-resources/js/** linguist-detectable=false
-resources/css/** linguist-detectable=false
-resources/sass/** linguist-detectable=false
-database/migrations/** linguist-detectable=false
 
 /.github export-ignore
 CHANGELOG.md export-ignore
