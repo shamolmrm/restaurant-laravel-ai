@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Coupons')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -15,11 +15,11 @@
                 <td><code class="fw-bold" style="color:var(--primary)">{{ $c->code }}</code></td>
                 <td>{{ $c->name }}</td>
                 <td><span class="badge bg-light text-dark">{{ ucfirst($c->type) }}</span></td>
-                <td class="fw-semibold">{{ $c->type=='percentage'?$c->value.'%':'৳'.number_format($c->value,0) }}</td>
-                <td>{{ $c->min_order_amount?'৳'.number_format($c->min_order_amount,0):'—' }}</td>
-                <td>{{ $c->used_count ?? 0 }}{{ $c->usage_limit?'/'.($c->usage_limit):'/ ∞' }}</td>
+                <td class="fw-semibold">{{ $c->type=='percentage'?$c->value.'%':'à§³'.number_format($c->value,0) }}</td>
+                <td>{{ $c->min_order_amount?'à§³'.number_format($c->min_order_amount,0):'â€”' }}</td>
+                <td>{{ $c->used_count ?? 0 }}{{ $c->usage_limit?'/'.($c->usage_limit):'/ âˆž' }}</td>
                 <td class="text-muted small">
-                    @if($c->starts_at && $c->expires_at) {{ $c->starts_at->format('d M y') }} – {{ $c->expires_at->format('d M y') }}
+                    @if($c->starts_at && $c->expires_at) {{ $c->starts_at->format('d M y') }} â€“ {{ $c->expires_at->format('d M y') }}
                     @elseif($c->expires_at) Expires {{ $c->expires_at->format('d M Y') }}
                     @else <span class="text-success">No Expiry</span>
                     @endif
@@ -43,5 +43,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($coupons->hasPages())<div class="card-footer">{{ $coupons->links() }}</div>@endif</div>
+</div></div>@if($coupons->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $coupons->firstItem() }}-{{ $coupons->lastItem() }} of {{ $coupons->total() }}</span>
+    {{ $coupons->links() }}
+</div>
+@endif</div>
 @endsection
+

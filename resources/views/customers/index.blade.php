@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Customers')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -21,9 +21,9 @@
                 <td>{{ $loop->iteration }}</td>
                 <td><a href="{{ route('customers.show',$c) }}" class="fw-semibold text-decoration-none" style="color:var(--secondary)">{{ $c->name }}</a></td>
                 <td>{{ $c->phone }}</td>
-                <td>{{ $c->email ?? '—' }}</td>
+                <td>{{ $c->email ?? 'â€”' }}</td>
                 <td><span class="badge bg-primary">{{ $c->orders_count }}</span></td>
-                <td class="fw-semibold">৳{{ number_format($c->total_spent,0) }}</td>
+                <td class="fw-semibold">à§³{{ number_format($c->total_spent,0) }}</td>
                 <td><span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>{{ $c->loyalty_points }}</span></td>
                 <td><span class="badge {{ $c->status=='active'?'bg-success':'bg-secondary' }}">{{ ucfirst($c->status) }}</span></td>
                 <td>
@@ -39,5 +39,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($customers->hasPages())<div class="card-footer">{{ $customers->links() }}</div>@endif</div>
+</div></div>@if($customers->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $customers->firstItem() }}-{{ $customers->lastItem() }} of {{ $customers->total() }}</span>
+    {{ $customers->links() }}
+</div>
+@endif</div>
 @endsection
+

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Employees')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -33,7 +33,7 @@
                 </td>
                 <td><span class="badge bg-light text-dark">{{ ucfirst(str_replace('_',' ',$emp->role)) }}</span></td>
                 <td>{{ $emp->phone }}</td>
-                <td class="fw-semibold">৳{{ number_format($emp->salary,0) }}</td>
+                <td class="fw-semibold">à§³{{ number_format($emp->salary,0) }}</td>
                 <td class="text-muted small">{{ $emp->hire_date->format('d M Y') }}</td>
                 <td><span class="badge {{ $emp->status=='active'?'bg-success':'bg-secondary' }}">{{ ucfirst($emp->status) }}</span></td>
                 <td>
@@ -49,5 +49,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($employees->hasPages())<div class="card-footer">{{ $employees->links() }}</div>@endif</div>
+</div></div>@if($employees->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $employees->firstItem() }}-{{ $employees->lastItem() }} of {{ $employees->total() }}</span>
+    {{ $employees->links() }}
+</div>
+@endif</div>
 @endsection
+

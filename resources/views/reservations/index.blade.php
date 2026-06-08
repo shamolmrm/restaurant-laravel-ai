@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Reservations')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -29,7 +29,7 @@
                 <td>{{ $r->customer_name }}</td>
                 <td>{{ $r->customer_phone }}</td>
                 <td>{{ $r->reservation_date->format('d M Y') }}<br><small class="text-muted">{{ substr($r->reservation_time,0,5) }}</small></td>
-                <td>{{ $r->table?->table_number ?? '—' }}</td>
+                <td>{{ $r->table?->table_number ?? 'â€”' }}</td>
                 <td><i class="bi bi-people me-1 text-muted"></i>{{ $r->guest_count }}</td>
                 <td>
                     <span class="badge" style="background:{{ match($r->status){'pending'=>'#fef3c7','confirmed'=>'#dbeafe','seated'=>'#dcfce7','completed'=>'#d1fae5','cancelled'=>'#fee2e2','no_show'=>'#f3f4f6',default=>'#f3f4f6'} }};color:{{ match($r->status){'pending'=>'#92400e','confirmed'=>'#1e40af','seated'=>'#166534','completed'=>'#065f46','cancelled'=>'#991b1b','no_show'=>'#374151',default=>'#374151'} }}">
@@ -48,5 +48,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($reservations->hasPages())<div class="card-footer">{{ $reservations->links() }}</div>@endif</div>
+</div></div>@if($reservations->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $reservations->firstItem() }}-{{ $reservations->lastItem() }} of {{ $reservations->total() }}</span>
+    {{ $reservations->links() }}
+</div>
+@endif</div>
 @endsection
+

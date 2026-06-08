@@ -89,6 +89,11 @@
         </tbody>
     </table>
 </div></div>
-@if($orders->hasPages())<div class="card-footer">{{ $orders->links() }}</div>@endif
+@if($orders->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $orders->firstItem() }}–{{ $orders->lastItem() }} of {{ $orders->total() }}</span>
+    {{ $orders->links() }}
+</div>
+@endif
 </div>
 @endsection

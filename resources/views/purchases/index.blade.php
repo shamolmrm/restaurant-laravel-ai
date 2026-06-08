@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Purchase Orders')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -25,9 +25,9 @@
             @forelse($purchaseOrders as $po)
             <tr>
                 <td class="fw-semibold" style="color:var(--secondary)">{{ $po->po_number }}</td>
-                <td>{{ $po->supplier?->name ?? '—' }}</td>
+                <td>{{ $po->supplier?->name ?? 'â€”' }}</td>
                 <td>{{ $po->items_count ?? $po->items->count() }}</td>
-                <td class="fw-semibold">৳{{ number_format($po->total_amount,2) }}</td>
+                <td class="fw-semibold">à§³{{ number_format($po->total_amount,2) }}</td>
                 <td>
                     <span class="badge {{ match($po->status){'draft'=>'bg-secondary','ordered'=>'bg-primary','partial'=>'bg-warning text-dark','received'=>'bg-success','cancelled'=>'bg-danger',default=>'bg-secondary'} }}">
                         {{ ucfirst($po->status) }}
@@ -53,5 +53,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($purchaseOrders->hasPages())<div class="card-footer">{{ $purchaseOrders->links() }}</div>@endif</div>
+</div></div>@if($purchaseOrders->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $purchaseOrders->firstItem() }}-{{ $purchaseOrders->lastItem() }} of {{ $purchaseOrders->total() }}</span>
+    {{ $purchaseOrders->links() }}
+</div>
+@endif</div>
 @endsection
+

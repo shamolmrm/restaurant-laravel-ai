@@ -85,6 +85,14 @@
         .page-loader { position: fixed; inset: 0; background: var(--secondary); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 16px; }
         .loader-ring { width: 44px; height: 44px; border: 3px solid rgba(255,255,255,0.15); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        /* Pagination */
+        .pagination { margin: 0; gap: 3px; flex-wrap: wrap; }
+        .pagination .page-item .page-link { border-radius: 6px !important; font-size: 0.8rem; padding: 4px 10px; color: var(--secondary); border-color: #e2e8f0; line-height: 1.5; }
+        .pagination .page-item.active .page-link { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .pagination .page-item.disabled .page-link { color: #adb5bd; }
+        .pagination .page-item .page-link:hover { background: #f1f5f9; color: var(--primary); }
+        .pagination .page-item.active .page-link:hover { background: var(--primary-dark); }
+        .card-footer { background: transparent; border-top: 1px solid #f1f5f9; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 0.8rem; color: #64748b; }
     </style>
     @stack('styles')
 </head>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Suppliers')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -22,10 +22,10 @@
                     <div class="fw-semibold">{{ $s->name }}</div>
                     <div class="text-muted small">{{ $s->company ?? '' }}</div>
                 </td>
-                <td>{{ $s->contact_person ?? '—' }}</td>
-                <td>{{ $s->phone ?? '—' }}</td>
-                <td>{{ $s->email ?? '—' }}</td>
-                <td>{{ $s->city ?? '—' }}</td>
+                <td>{{ $s->contact_person ?? 'â€”' }}</td>
+                <td>{{ $s->phone ?? 'â€”' }}</td>
+                <td>{{ $s->email ?? 'â€”' }}</td>
+                <td>{{ $s->city ?? 'â€”' }}</td>
                 <td><span class="badge {{ $s->status=='active'?'bg-success':'bg-secondary' }}">{{ ucfirst($s->status ?? 'active') }}</span></td>
                 <td>
                     <div class="d-flex gap-1">
@@ -39,5 +39,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($suppliers->hasPages())<div class="card-footer">{{ $suppliers->links() }}</div>@endif</div>
+</div></div>@if($suppliers->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $suppliers->firstItem() }}-{{ $suppliers->lastItem() }} of {{ $suppliers->total() }}</span>
+    {{ $suppliers->links() }}
+</div>
+@endif</div>
 @endsection
+

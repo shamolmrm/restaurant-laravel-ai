@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Users')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -22,7 +22,7 @@
                     </div>
                 </td>
                 <td>{{ $u->email }}</td>
-                <td>{{ $u->phone ?? '—' }}</td>
+                <td>{{ $u->phone ?? 'â€”' }}</td>
                 <td>
                     @foreach($u->roles as $role)<span class="badge me-1" style="background:var(--secondary)">{{ ucfirst($role->name) }}</span>@endforeach
                 </td>
@@ -44,5 +44,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($users->hasPages())<div class="card-footer">{{ $users->links() }}</div>@endif</div>
+</div></div>@if($users->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $users->firstItem() }}-{{ $users->lastItem() }} of {{ $users->total() }}</span>
+    {{ $users->links() }}
+</div>
+@endif</div>
 @endsection
+

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Inventory')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -38,14 +38,14 @@
             <tr class="{{ $item->quantity==0?'table-danger':($isLow?'table-warning':'') }}">
                 <td class="text-muted small">{{ $item->sku }}</td>
                 <td class="fw-semibold">{{ $item->name }}</td>
-                <td class="text-muted small">{{ $item->category ?? '—' }}</td>
+                <td class="text-muted small">{{ $item->category ?? 'â€”' }}</td>
                 <td>
                     <span class="fw-bold {{ $item->quantity==0?'text-danger':($isLow?'text-warning':'text-success') }}">{{ number_format($item->quantity,2) }}</span>
                 </td>
                 <td class="text-muted">{{ number_format($item->min_quantity,2) }}</td>
                 <td class="text-muted">{{ $item->unit }}</td>
-                <td>৳{{ number_format($item->unit_cost,2) }}</td>
-                <td class="fw-semibold">৳{{ number_format($item->total_value,2) }}</td>
+                <td>à§³{{ number_format($item->unit_cost,2) }}</td>
+                <td class="fw-semibold">à§³{{ number_format($item->total_value,2) }}</td>
                 <td>
                     @if($item->quantity == 0)
                         <span class="badge bg-danger">Out of Stock</span>
@@ -91,5 +91,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($items->hasPages())<div class="card-footer">{{ $items->links() }}</div>@endif</div>
+</div></div>@if($items->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $items->firstItem() }}-{{ $items->lastItem() }} of {{ $items->total() }}</span>
+    {{ $items->links() }}
+</div>
+@endif</div>
 @endsection
+

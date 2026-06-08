@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Delivery Orders')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -30,12 +30,12 @@
             @forelse($deliveries as $d)
             <tr>
                 <td class="fw-semibold small" style="color:var(--secondary)">{{ $d->tracking_code }}</td>
-                <td>{{ $d->order?->order_number ?? '—' }}</td>
+                <td>{{ $d->order?->order_number ?? 'â€”' }}</td>
                 <td>
-                    <div>{{ $d->customer_name ?? $d->order?->customer?->name ?? '—' }}</div>
+                    <div>{{ $d->customer_name ?? $d->order?->customer?->name ?? 'â€”' }}</div>
                     <div class="text-muted small">{{ $d->customer_phone ?? '' }}</div>
                 </td>
-                <td class="text-muted small" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $d->delivery_address ?? '—' }}</td>
+                <td class="text-muted small" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $d->delivery_address ?? 'â€”' }}</td>
                 <td>{{ $d->rider?->name ?? '<span class="text-muted">Unassigned</span>' }}</td>
                 <td>
                     <span class="badge {{ match($d->status ?? 'pending'){'pending'=>'bg-warning text-dark','assigned'=>'bg-info','picked_up'=>'bg-primary','in_transit'=>'bg-primary','delivered'=>'bg-success','failed'=>'bg-danger','cancelled'=>'bg-secondary',default=>'bg-secondary'} }}">
@@ -81,5 +81,11 @@
             @endforelse
         </tbody>
     </table>
-</div></div>@if($deliveries->hasPages())<div class="card-footer">{{ $deliveries->links() }}</div>@endif</div>
+</div></div>@if($deliveries->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $deliveries->firstItem() }}-{{ $deliveries->lastItem() }} of {{ $deliveries->total() }}</span>
+    {{ $deliveries->links() }}
+</div>
+@endif</div>
 @endsection
+

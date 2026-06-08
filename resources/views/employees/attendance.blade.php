@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Attendance - '.$employee->name)
 @section('content')
 <div class="d-flex align-items-center gap-3 mb-4">
@@ -35,9 +35,9 @@
                 <tr>
                     <td>{{ $att->date->format('d M Y') }}</td>
                     <td class="text-muted">{{ $att->date->format('l') }}</td>
-                    <td>{{ $att->check_in?->format('h:i A') ?? '—' }}</td>
-                    <td>{{ $att->check_out?->format('h:i A') ?? '—' }}</td>
-                    <td>{{ $att->working_hours ? $att->working_hours.'h' : '—' }}</td>
+                    <td>{{ $att->check_in?->format('h:i A') ?? 'â€”' }}</td>
+                    <td>{{ $att->check_out?->format('h:i A') ?? 'â€”' }}</td>
+                    <td>{{ $att->working_hours ? $att->working_hours.'h' : 'â€”' }}</td>
                     <td><span class="badge {{ match($att->status){'present'=>'bg-success','absent'=>'bg-danger','late'=>'bg-warning text-dark','half_day'=>'bg-info',default=>'bg-secondary'} }}">{{ ucfirst(str_replace('_',' ',$att->status)) }}</span></td>
                     <td class="text-muted small">{{ $att->notes ?? '' }}</td>
                 </tr>
@@ -47,5 +47,11 @@
             </tbody>
         </table>
     </div>
-</div>@if($attendances->hasPages())<div class="card-footer">{{ $attendances->links() }}</div>@endif</div>
+</div>@if($attendances->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $attendances->firstItem() }}-{{ $attendances->lastItem() }} of {{ $attendances->total() }}</span>
+    {{ $attendances->links() }}
+</div>
+@endif</div>
 @endsection
+

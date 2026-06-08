@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Notifications')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -55,5 +55,11 @@
         <p class="text-muted mt-2">No notifications yet</p>
     </div>
     @endforelse
-</div>@if($notifications->hasPages())<div class="card-footer">{{ $notifications->links() }}</div>@endif</div>
+</div>@if($notifications->hasPages())
+<div class="card-footer">
+    <span>Showing {{ $notifications->firstItem() }}-{{ $notifications->lastItem() }} of {{ $notifications->total() }}</span>
+    {{ $notifications->links() }}
+</div>
+@endif</div>
 @endsection
+

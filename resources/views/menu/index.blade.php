@@ -91,7 +91,12 @@
             </table>
         </div>
     </div>
-    @if($menuItems->hasPages())<div class="card-footer">{{ $menuItems->links() }}</div>@endif
+    @if($menuItems->hasPages())
+    <div class="card-footer">
+        <span>Showing {{ $menuItems->firstItem() }}–{{ $menuItems->lastItem() }} of {{ $menuItems->total() }}</span>
+        {{ $menuItems->links() }}
+    </div>
+    @endif
 </div>
 @endsection
 @push('scripts')

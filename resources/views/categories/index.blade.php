@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Categories')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -60,7 +60,11 @@
         </div>
     </div>
     @if($categories->hasPages())
-    <div class="card-footer">{{ $categories->links() }}</div>
+    <div class="card-footer">
+    <span>Showing {{ $categories->firstItem() }}-{{ $categories->lastItem() }} of {{ $categories->total() }}</span>
+    {{ $categories->links() }}
+</div>
     @endif
 </div>
 @endsection
+
