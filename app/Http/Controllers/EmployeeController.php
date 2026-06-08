@@ -97,14 +97,33 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee deleted.');
     }
 
-    // Attendance
+    // General attendance sheet (all employees, one date)
     public function attendance(Request $request)
     {
         $date = $request->date ?? today()->toDateString();
-        $employees = Employee::where('status', 'active')
-            ->with(['attendances' => fn($q) => $q->whereDate('date', $date)])
-            ->get();
-        return view('employees.attendance', compact('employees', 'date'));
+        $search = $request->search;
+
+        $query = Employee::where('status', 'active')
+            ->with(['attendances' => fn($q) => $q->whereDate('date', $date)]);
+
+        if ($search) {
+            $query->where(fn($q) => $q->where('name', 'like', "%$search%")->orWhere('employee_id', 'like', "%$search%"));
+        }
+
+        $employees = $query->orderBy('name')->get();
+
+        $summary = [
+            'present' => 0, 'absent' => 0, 'late' => 0, 'not_marked' => 0,
+        ];
+        foreach ($employees as $emp) {
+            $att = $emp->attendances->first();
+            if (!$att) $summary['not_marked']++;
+            elseif ($att->status === 'present') $summary['present']++;
+            elseif ($att->status === 'absent') $summary['absent']++;
+            elseif ($att->status === 'late') $summary['late']++;
+        }
+
+        return view('employees.attendance-list', compact('employees', 'date', 'summary'));
     }
 
     public function markAttendance(Request $request)
