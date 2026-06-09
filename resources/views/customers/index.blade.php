@@ -23,7 +23,7 @@
                 <td>{{ $c->phone }}</td>
                 <td>{{ $c->email ?? 'â€”' }}</td>
                 <td><span class="badge bg-primary">{{ $c->orders_count }}</span></td>
-                <td class="fw-semibold">à§³{{ number_format($c->total_spent,0) }}</td>
+                <td class="fw-semibold">৳{{ number_format($c->total_spent,0) }}</td>
                 <td><span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>{{ $c->loyalty_points }}</span></td>
                 <td><span class="badge {{ $c->status=='active'?'bg-success':'bg-secondary' }}">{{ ucfirst($c->status) }}</span></td>
                 <td>

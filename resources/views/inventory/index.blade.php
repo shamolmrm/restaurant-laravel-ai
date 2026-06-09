@@ -44,8 +44,8 @@
                 </td>
                 <td class="text-muted">{{ number_format($item->min_quantity,2) }}</td>
                 <td class="text-muted">{{ $item->unit }}</td>
-                <td>à§³{{ number_format($item->unit_cost,2) }}</td>
-                <td class="fw-semibold">à§³{{ number_format($item->total_value,2) }}</td>
+                <td>৳{{ number_format($item->unit_cost,2) }}</td>
+                <td class="fw-semibold">৳{{ number_format($item->total_value,2) }}</td>
                 <td>
                     @if($item->quantity == 0)
                         <span class="badge bg-danger">Out of Stock</span>

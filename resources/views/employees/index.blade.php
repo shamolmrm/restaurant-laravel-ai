@@ -33,7 +33,7 @@
                 </td>
                 <td><span class="badge bg-light text-dark">{{ ucfirst(str_replace('_',' ',$emp->role)) }}</span></td>
                 <td>{{ $emp->phone }}</td>
-                <td class="fw-semibold">à§³{{ number_format($emp->salary,0) }}</td>
+                <td class="fw-semibold">৳{{ number_format($emp->salary,0) }}</td>
                 <td class="text-muted small">{{ $emp->hire_date->format('d M Y') }}</td>
                 <td><span class="badge {{ $emp->status=='active'?'bg-success':'bg-secondary' }}">{{ ucfirst($emp->status) }}</span></td>
                 <td>

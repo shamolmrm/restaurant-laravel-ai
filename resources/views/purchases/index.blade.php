@@ -27,7 +27,7 @@
                 <td class="fw-semibold" style="color:var(--secondary)">{{ $po->po_number }}</td>
                 <td>{{ $po->supplier?->name ?? 'â€”' }}</td>
                 <td>{{ $po->items_count ?? $po->items->count() }}</td>
-                <td class="fw-semibold">à§³{{ number_format($po->total_amount,2) }}</td>
+                <td class="fw-semibold">৳{{ number_format($po->total_amount,2) }}</td>
                 <td>
                     <span class="badge {{ match($po->status){'draft'=>'bg-secondary','ordered'=>'bg-primary','partial'=>'bg-warning text-dark','received'=>'bg-success','cancelled'=>'bg-danger',default=>'bg-secondary'} }}">
                         {{ ucfirst($po->status) }}
